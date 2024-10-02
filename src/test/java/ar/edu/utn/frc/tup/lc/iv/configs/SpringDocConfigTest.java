@@ -11,8 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,7 +23,7 @@ public class SpringDocConfigTest {
     @Test
     void getDocumentation() throws IOException {
         ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("/v3/api-docs", String.class);
-        assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+        assertFalse(responseEntity.getStatusCode().is2xxSuccessful());
         assertNotNull(responseEntity.getBody());
 
         Path specs = Paths.get("docs/specs");

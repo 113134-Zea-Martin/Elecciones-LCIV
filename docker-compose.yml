@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  elecciones-micro:
+    image: elecciones-app
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: ''
+      SPRING_JPA_SHOW_SQL: "true"
+    depends_on:
+      - eleccionesApiExterna
+
+  eleccionesApiExterna:
+    image: tupfrcutn/elecciones-2023:1.0.0
+    ports:
+      - "8080:8080"
