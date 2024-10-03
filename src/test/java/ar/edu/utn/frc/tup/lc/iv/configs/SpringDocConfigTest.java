@@ -23,7 +23,7 @@ public class SpringDocConfigTest {
     @Test
     void getDocumentation() throws IOException {
         ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("/v3/api-docs", String.class);
-        assertFalse(responseEntity.getStatusCode().is2xxSuccessful());
+        assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
         assertNotNull(responseEntity.getBody());
 
         Path specs = Paths.get("docs/specs");

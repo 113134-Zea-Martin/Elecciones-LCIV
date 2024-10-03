@@ -1,3 +1,4 @@
+
 package ar.edu.utn.frc.tup.lc.iv.configs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +17,9 @@ public class CorsConfig {
                         .allowedOrigins("*") // Permitir cualquier origen (puedes especificar uno o varios)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
                         .allowedHeaders("*") // Cabeceras permitidas
-                        .allowCredentials(true); // Si se permite el uso de cookies
+                        .allowCredentials(false); // Si se permite el uso de cookies
             }
         };
     }
 }
+

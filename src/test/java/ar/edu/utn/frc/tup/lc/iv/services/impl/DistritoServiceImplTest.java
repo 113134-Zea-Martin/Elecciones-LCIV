@@ -30,6 +30,7 @@ class DistritoServiceImplTest {
     private DistritoServiceImpl distritoServiceImpl;
 
     private Distrito[] mockDistritos;
+    String URL = "http://java-api:8080";
 
     @BeforeEach
     void setUp() {
@@ -42,7 +43,7 @@ class DistritoServiceImplTest {
 
     @Test
     void obtenerDistritos() {
-        when(restTemplate.getForEntity("http://localhost:8080/distritos", Distrito[].class))
+        when(restTemplate.getForEntity(URL +"/distritos", Distrito[].class))
                 .thenReturn(new ResponseEntity<>(mockDistritos, HttpStatus.OK));
 
         Distrito[] distritos = distritoServiceImpl.obtenerDistritos();
@@ -56,7 +57,7 @@ class DistritoServiceImplTest {
     @Test
     void obtenerDistritosPorNombre() {
         String nombre = "DistritoA";
-        when(restTemplate.getForEntity("http://localhost:8080/distritos?distritoNombre=DistritoA", Distrito[].class))
+        when(restTemplate.getForEntity(URL +"/distritos?distritoNombre=DistritoA", Distrito[].class))
                 .thenReturn(new ResponseEntity<>(mockDistritos, HttpStatus.OK));
 
         Distrito[] distritos = distritoServiceImpl.obtenerDistritosPorNombre(nombre);
@@ -77,10 +78,10 @@ class DistritoServiceImplTest {
 
         Distrito[] mockDistrito = {new Distrito(1, "DistritoA")};
 
-        when(restTemplate.getForEntity("http://localhost:8080/distritos?distritoId=1", Distrito[].class))
+        when(restTemplate.getForEntity(URL +"/distritos?distritoId=1", Distrito[].class))
                 .thenReturn(new ResponseEntity<>(mockDistrito, HttpStatus.OK));
 
-        when(restTemplate.getForEntity("http://localhost:8080/cargos?distritoId=1", CargoGetDto[].class))
+        when(restTemplate.getForEntity(URL +"/cargos?distritoId=1", CargoGetDto[].class))
                 .thenReturn(new ResponseEntity<>(mockCargos, HttpStatus.OK));
 
         CargosResponseDto response = distritoServiceImpl.obtenerCargosPorDistrito(distritoId);
@@ -99,7 +100,7 @@ class DistritoServiceImplTest {
                 new Seccion(2L, "Seccion 2", 1L)
         };
 
-        when(restTemplate.getForEntity("http://localhost:8080/secciones?distritoId=1", Seccion[].class))
+        when(restTemplate.getForEntity(URL +"/secciones?distritoId=1", Seccion[].class))
                 .thenReturn(new ResponseEntity<>(mockSecciones, HttpStatus.OK));
 
         List<SeccionDto> secciones = distritoServiceImpl.obtenerSeccionesPorDistrito(distritoId);

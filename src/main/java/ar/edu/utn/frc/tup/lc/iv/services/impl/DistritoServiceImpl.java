@@ -17,7 +17,7 @@ import java.util.Objects;
 @Service
 public class DistritoServiceImpl implements DistritoService {
 
-    private final String URL = "http://localhost:8080";
+    private final String URL = "http://java-api:8080";
 
     @Autowired
     private RestTemplate restTemplate;
