@@ -6,9 +6,14 @@ import ar.edu.utn.frc.tup.lc.iv.models.Distrito;
 import ar.edu.utn.frc.tup.lc.iv.models.Resultado;
 import ar.edu.utn.frc.tup.lc.iv.models.Seccion;
 import ar.edu.utn.frc.tup.lc.iv.services.DistritoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +22,35 @@ import java.util.Objects;
 @Service
 public class DistritoServiceImpl implements DistritoService {
 
-    private final String URL = "http://java-api:8080";
+    //private final String URL = "http://java-api:8080";
+    private final String URL = "http://localhost:8080";
 
     @Autowired
     private RestTemplate restTemplate;
 
+
+    private static final String RESILIENCE4J_INSTANCE_NAME = "microCircuitBreaker";
+    private static final String FALLBACK_METHOD = "fallback";
+    private Integer counter = 0;
+
     @Override
+    @CircuitBreaker(name = RESILIENCE4J_INSTANCE_NAME, fallbackMethod = FALLBACK_METHOD)
     public Distrito[] obtenerDistritos() {
+        counter++;
+        System.out.println("Execution N° " + counter + " - Calling micro B");
         Distrito[] distritos = restTemplate.getForEntity(URL + "/distritos", Distrito[].class).getBody();
         return distritos;
     }
+
+    public Distrito[] fallback(Exception ex) {
+        counter++;
+        System.out.println("Execution N° " + counter + " - FallBack B");
+        //return ResponseEntity.status(503).body("Soy un Circuit-Breaker funcionando :D");
+
+        throw new RuntimeException("Error manejado en el fallback");
+        //throw new ResponseStatusException(HttpStatusCode.valueOf(503), "Soy un Circuit-Breaker funcionando :D", ex);
+    }
+
 
     @Override
     public Distrito[] obtenerDistritosPorNombre(String nombre) {

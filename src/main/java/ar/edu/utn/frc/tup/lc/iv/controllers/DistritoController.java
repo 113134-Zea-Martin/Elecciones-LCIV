@@ -5,8 +5,10 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.common.ResultadoResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.SeccionDto;
 import ar.edu.utn.frc.tup.lc.iv.models.Distrito;
 import ar.edu.utn.frc.tup.lc.iv.services.DistritoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ public class DistritoController {
     @Autowired
     private DistritoService distritoService;
 
+
+
     @GetMapping("/distritos")
     public ResponseEntity<Distrito[]> getDistritos(@RequestParam(required = false) String distrito_nombre) {
 
@@ -31,6 +35,12 @@ public class DistritoController {
            distritos = distritoService.obtenerDistritosPorNombre(distrito_nombre);
         }
         return ResponseEntity.ok(distritos);
+    }
+
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        return new ResponseEntity<>("Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/cargos")

@@ -48,6 +48,16 @@
             <version>2.1.0</version>
         </dependency>
 
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-circuitbreaker-resilience4j -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-circuitbreaker-resilience4j</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
+
+
         <!--    Lombok    -->
         <dependency>
             <groupId>org.projectlombok</groupId>
